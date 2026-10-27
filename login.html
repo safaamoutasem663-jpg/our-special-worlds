@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دخول مساحتنا الخاصة 💙</title>
+
+    <title>مساحتنا الخاصة 💙</title>
 
     <style>
         * {
@@ -19,12 +20,7 @@
             padding: 20px;
             font-family: Arial, sans-serif;
             color: #fff7e9;
-            background:
-                linear-gradient(
-                    rgba(13, 25, 48, 0.78),
-                    rgba(13, 25, 48, 0.90)
-                ),
-                linear-gradient(145deg, #354766, #101b32);
+            background: linear-gradient(145deg, #354766, #101b32);
         }
 
         .card {
@@ -40,7 +36,6 @@
 
         .heart {
             font-size: 48px;
-            margin-bottom: 10px;
         }
 
         h1 {
@@ -73,10 +68,10 @@
 
         button {
             width: 100%;
-            padding: 15px;
-            margin-top: 20px;
+            padding: 14px;
+            margin-top: 16px;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             background: #e9c68c;
             color: #15233e;
             font-size: 16px;
@@ -86,6 +81,15 @@
         button:disabled {
             opacity: 0.6;
             cursor: wait;
+        }
+
+        .forgot {
+            display: inline-block;
+            margin-top: 18px;
+            color: #e9c68c;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         #status {
@@ -104,7 +108,6 @@
 </head>
 
 <body>
-
     <main class="card">
         <div class="heart">🤍</div>
 
@@ -119,7 +122,7 @@
             <input
                 id="email"
                 type="email"
-                placeholder="الإيميل"
+                placeholder="الإيميل المسجل في الموقع"
                 autocomplete="username"
                 required
             >
@@ -137,9 +140,15 @@
             </button>
         </form>
 
+        <a id="forgotPassword" class="forgot" href="#">
+            نسيت كلمة المرور؟
+        </a>
+
         <p id="status" role="status" aria-live="polite"></p>
 
-        <a class="back" href="Index.html">الرجوع للصفحة الرئيسية</a>
+        <a class="back" href="Index.html">
+            الرجوع للصفحة الرئيسية
+        </a>
     </main>
 
     <script type="module">
@@ -148,7 +157,8 @@
 
         import {
             getAuth,
-            signInWithEmailAndPassword
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail
         } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -168,6 +178,39 @@
         const passwordInput = document.getElementById("password");
         const status = document.getElementById("status");
         const loginButton = document.getElementById("loginButton");
+        const forgotPassword = document.getElementById("forgotPassword");
+
+        function showError(error) {
+            const messages = {
+                "auth/invalid-email":
+                    "الإيميل المكتوب غير صحيح. راجعي كتابته.",
+
+                "auth/invalid-credential":
+                    "بيانات الدخول غير مطابقة. ممكن تحتاجي إعادة تعيين كلمة المرور.",
+
+                "auth/wrong-password":
+                    "كلمة المرور غير صحيحة. جرّبي استعادتها من الرابط أدناه.",
+
+                "auth/user-not-found":
+                    "الحساب غير موجود في مشروع Firebase الحالي.",
+
+                "auth/too-many-requests":
+                    "محاولات الدخول كثيرة. انتظري شوية وحاولي لاحقاً.",
+
+                "auth/network-request-failed":
+                    "في مشكلة في الإنترنت. تأكدي من الاتصال وحاولي تاني.",
+
+                "auth/operation-not-allowed":
+                    "تسجيل الدخول بالإيميل غير مفعّل في إعدادات Firebase.",
+
+                "auth/invalid-api-key":
+                    "مفتاح Firebase غير صحيح. راجعي إعدادات المشروع."
+            };
+
+            return messages[error.code] ||
+                "حصل خطأ أثناء تسجيل الدخول. رمز الخطأ: " +
+                (error.code || "غير معروف");
+        }
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -175,35 +218,67 @@
             const email = emailInput.value.trim();
             const password = passwordInput.value;
 
-            status.textContent = "جاري تسجيل الدخول...";
+            status.textContent = "جاري التحقق من بياناتك...";
             loginButton.disabled = true;
 
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
                 status.textContent = "تم تسجيل الدخول بنجاح 💙";
 
                 window.location.href = "Index.html";
-            } catch (error) {
-                if (
-                    error.code === "auth/invalid-credential" ||
-                    error.code === "auth/wrong-password" ||
-                    error.code === "auth/user-not-found"
-                ) {
-                    status.textContent =
-                        "الإيميل أو كلمة المرور غير صحيحة. راجعي البيانات وحاولي تاني.";
-                } else if (error.code === "auth/too-many-requests") {
-                    status.textContent =
-                        "محاولات الدخول كثيرة. انتظري شوية وحاولي لاحقاً.";
-                } else {
-                    status.textContent =
-                        "ما قدرنا نسجل الدخول. راجعي اتصال الإنترنت وإعدادات Firebase.";
-                }
 
+            } catch (error) {
+                console.error("Firebase login error:", error);
+
+                status.textContent = showError(error);
                 loginButton.disabled = false;
             }
         });
-    </script>
 
+        forgotPassword.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+
+            if (!email) {
+                status.textContent =
+                    "اكتبي إيميلك أولاً، وبعدها اضغطي نسيت كلمة المرور.";
+                emailInput.focus();
+                return;
+            }
+
+            status.textContent = "جاري إرسال طلب استعادة كلمة المرور...";
+            forgotPassword.style.pointerEvents = "none";
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+
+                status.textContent =
+                    "لو الحساب مسجل ويسمح بإرسال رسالة، حتوصلك رسالة استعادة كلمة المرور. راجعي صندوق الوارد والرسائل غير المرغوب فيها.";
+
+            } catch (error) {
+                console.error("Password reset error:", error);
+
+                if (error.code === "auth/invalid-email") {
+                    status.textContent =
+                        "الإيميل غير صحيح. راجعي كتابته.";
+                } else if (error.code === "auth/network-request-failed") {
+                    status.textContent =
+                        "تعذر الاتصال. راجعي الإنترنت وحاولي تاني.";
+                } else {
+                    status.textContent =
+                        "ما قدرنا نرسل طلب الاستعادة. رمز الخطأ: " +
+                        (error.code || "غير معروف");
+                }
+            } finally {
+                forgotPassword.style.pointerEvents = "auto";
+            }
+        });
+    </script>
 </body>
 </html>
