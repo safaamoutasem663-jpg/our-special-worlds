@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صورتك اليوم 🤍</title><style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #fff8e9;
+    background:
+        radial-gradient(ellipse at top, #344b70 0%, transparent 65%),
+        linear-gradient(145deg, #091426, #172b49 55%, #080f1d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+}
+
+.page {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+}
+
+.back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #ffe2a0;
+    text-decoration: none;
+    font-size: 27px;
+    border: 1px solid #ffffff35;
+    background: #ffffff0d;
+    backdrop-filter: blur(12px);
+    margin-bottom: 24px;
+}
+
+h1 {
+    font-size: 27px;
+    margin: 0 0 12px;
+    color: #ffe2a0;
+}
+
+.subtitle {
+    color: #e3e8f2;
+    line-height: 1.9;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.075);
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    border-radius: 25px;
+    padding: 22px;
+    box-shadow: 0 15px 45px #00000025;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.preview {
+    width: 100%;
+    min-height: 230px;
+    border: 1px dashed #ffe2a080;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #07132655;
+    margin-bottom: 18px;
+}
+
+.preview img {
+    width: 100%;
+    max-height: 390px;
+    object-fit: contain;
+    display: none;
+}
+
+.placeholder {
+    padding: 25px;
+    color: #e7dfd0;
+    line-height: 2;
+}
+
+.camera {
+    font-size: 46px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.choose {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f4d99a, #c9a65c);
+    color: #17243a;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.note {
+    color: #e0e5ef;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+.love {
+    margin-top: 23px;
+    color: #ffe2a0;
+    line-height: 2;
+    font-size: 16px;
+}
+</style></head><body><main class="page"><a class="back" href="Index.html" aria-label="العودة للرئيسية">‹</a>
+
+<h1>صورتك اليوم 🤍</h1>
+
+<p class="subtitle">
+    حتى لو ما كنت قريب مني،<br>
+    خليني أشوفك وأحس إنك معاي.
+</p>
+
+<section class="glass">
+
+    <div class="preview">
+        <div class="placeholder" id="placeholder">
+            <span class="camera">📷</span>
+            اختار صورتك وخلي يومي أحلى
+        </div>
+
+        <img id="photoPreview" alt="معاينة الصورة المختارة">
+    </div>
+
+    <label class="choose" for="photoInput">
+        📸 اختار صورة من تلفونك
+    </label>
+
+    <input
+        type="file"
+        id="photoInput"
+        accept="image/*"
+    >
+
+    <p class="note">
+        الصورة حتظهر هنا للمعاينة فقط،<br>
+        وما حتتخزن أو تتبعت لزوجك تلقائياً.
+    </p>
+
+</section>
+
+<p class="love">
+    «بعض الصور ما بتكون مجرد صورة،<br>
+    بتكون طمأنينة لقلب مشتاق» ✨
+</p>
+
+</main><script>
+const photoInput = document.getElementById("photoInput");
+const photoPreview = document.getElementById("photoPreview");
+const placeholder = document.getElementById("placeholder");
+
+photoInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("اختاري ملف صورة من فضلك.");
+        return;
+    }
+
+    const imageURL = URL.createObjectURL(file);
+
+    photoPreview.src = imageURL;
+    photoPreview.style.display = "block";
+    placeholder.style.display = "none";
+});
+</script></body>
+  </html>
