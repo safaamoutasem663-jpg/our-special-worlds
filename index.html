@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساحتنا الخاصة</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #fff7e9;
+            background: #15233e;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+
+            background:
+                linear-gradient(
+                    rgba(13, 25, 48, 0.55),
+                    rgba(13, 25, 48, 0.78)
+                ),
+                url("our-photo.jpg") center center / cover no-repeat,
+                linear-gradient(145deg, #354766, #101b32);
+        }
+
+        .content {
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e9c68c;
+            background: rgba(255, 255, 255, 0.10);
+            box-shadow: 0 0 25px rgba(233, 198, 140, 0.15);
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 27px;
+            line-height: 1.9;
+            font-weight: normal;
+            color: #fff7e9;
+            margin: 0 0 12px;
+        }
+
+        .subtitle {
+            color: #e9c68c;
+            font-size: 14px;
+            line-height: 1.9;
+            margin: 0 0 35px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .glass-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 62px;
+            padding: 16px 18px;
+            border-radius: 18px;
+
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(233, 198, 140, 0.65);
+
+            color: #fff7e9;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .glass-button:active {
+            transform: scale(0.98);
+            background: rgba(233, 198, 140, 0.18);
+        }
+
+        .footer {
+            margin-top: 35px;
+            color: rgba(255, 247, 233, 0.7);
+            font-size: 12px;
+        }
+
+        @media (max-width: 380px) {
+            h1 {
+                font-size: 23px;
+            }
+
+            .glass-button {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <section class="content">
+
+            <!-- الصورة الدائرية: نضيف صورتكم لاحقاً -->
+            <img
+                class="logo"
+                src="our-photo.jpg"
+                alt="صورتنا"
+                onerror="this.style.visibility='hidden';"
+            >
+
+            <h1>
+                مهما بعدت المسافات،<br>
+                إنت أقرب الناس لقلبي
+            </h1>
+
+            <p class="subtitle">
+                مساحتنا الصغيرة البتجمع قلبينا 💙
+            </p>
+
+            <nav class="buttons">
+
+                <!-- الانتقال إلى صفحة المحادثة -->
+                <a href="massge.html" class="glass-button">
+                    💌 أرسل رسالة من هنا
+                </a>
+
+                <!-- الانتقال إلى صفحة الصور -->
+                <a href="photo.html" class="glass-button">
+                    📷 أرسل صورة أشوفك اليوم
+                </a>
+
+                <!-- الانتقال إلى صفحة تفاصيل اليوم -->
+                <a href="daily.html" class="glass-button">
+                    ✨ احكيلي عن شي مميز في يومك
+                </a>
+
+            </nav>
+
+            <div class="footer">
+                مساحة خاصة بين قلبين 🤍
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+                  </html>
