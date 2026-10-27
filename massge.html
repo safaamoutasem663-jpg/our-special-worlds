@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساحتنا الخاصة</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #15233e;
+            --gold: #e9c68c;
+            --cream: #fff7e9;
+        }
+
+        body {
+            margin: 0;
+            height: 100dvh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: var(--cream);
+            background: var(--navy);
+        }
+
+        .chat {
+            height: 100%;
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    rgba(12, 24, 46, 0.48),
+                    rgba(12, 24, 46, 0.68)
+                ),
+                url("our-photo.jpg") center center / cover no-repeat,
+                linear-gradient(145deg, #354766, #101b32);
+        }
+
+        /* الشريط العلوي */
+
+        .header {
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 17px;
+            background: rgba(17, 30, 54, 0.72);
+            border-bottom: 1px solid rgba(233, 198, 140, 0.45);
+            backdrop-filter: blur(12px);
+        }
+
+        .back {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 29px;
+            padding: 0 5px;
+        }
+
+        .avatar {
+            width: 49px;
+            height: 49px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .person {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .person h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: var(--gold);
+        }
+
+        .person p {
+            margin: 0;
+            font-size: 12px;
+            color: #e0e2e9;
+        }
+
+        .heart {
+            font-size: 25px;
+            color: var(--gold);
+        }
+
+        /* مساحة المحادثة */
+
+        .messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 24px 14px;
+            scroll-behavior: smooth;
+        }
+
+        .day {
+            align-self: center;
+            padding: 8px 24px;
+            border-radius: 25px;
+            background: rgba(28, 43, 70, 0.72);
+            border: 1px solid rgba(233, 198, 140, 0.3);
+            color: #e8e5e0;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .bubble {
+            max-width: 83%;
+            width: fit-content;
+            padding: 13px 15px 9px;
+            border-radius: 19px;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .mine {
+            align-self: flex-start;
+            background: rgba(39, 58, 91, 0.76);
+            border: 1px solid rgba(116, 150, 201, 0.65);
+            border-bottom-right-radius: 5px;
+        }
+
+        .theirs {
+            align-self: flex-end;
+            background: rgba(238, 234, 239, 0.25);
+            border: 1px solid rgba(255, 245, 235, 0.45);
+            border-bottom-left-radius: 5px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            font-size: 10px;
+            color: #d2d3dd;
+        }
+
+        .checks {
+            color: var(--gold);
+            font-size: 13px;
+        }
+
+        /* مساحة كتابة الرسائل */
+
+        .composer {
+            display: flex;
+            align-items: flex-end;
+            gap: 9px;
+            padding: 11px 12px;
+            background: rgba(12, 24, 44, 0.83);
+            border-top: 1px solid rgba(233, 198, 140, 0.55);
+            backdrop-filter: blur(15px);
+        }
+
+        .message-input {
+            flex: 1;
+            min-width: 0;
+            min-height: 48px;
+            max-height: 140px;
+            overflow-y: auto;
+            resize: none;
+            border-radius: 23px;
+            padding: 13px 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(151, 174, 216, 0.55);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        .message-input::placeholder {
+            color: #c0c4d1;
+        }
+
+        .send {
+            width: 49px;
+            height: 49px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            background: var(--gold);
+            color: #182641;
+            font-size: 23px;
+            cursor: pointer;
+        }
+
+        .notice {
+            text-align: center;
+            padding: 5px 8px 9px;
+            background: rgba(12, 24, 44, 0.83);
+            color: #c7cbd6;
+            font-size: 10px;
+        }
+
+        @media (max-width: 360px) {
+            .bubble {
+                max-width: 90%;
+                font-size: 14px;
+            }
+
+            .header {
+                gap: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="chat">
+
+        <header class="header">
+            <a class="back" href="Index.html" aria-label="رجوع">‹</a>
+
+            <div class="avatar">🤍</div>
+
+            <div class="person">
+                <h2>مساحتنا الخاصة</h2>
+                <p>كلام بين قلبين 💙</p>
+            </div>
+
+            <div class="heart">♡</div>
+        </header>
+
+        <section class="messages" id="messages">
+
+            <div class="day">مساحتنا الخاصة</div>
+
+            <div class="bubble mine">
+                مهما بعدت المسافات، إنت أقرب الناس لقلبي.
+                <div class="meta">
+                    <span>الآن</span>
+                    <span class="checks">✓✓</span>
+                </div>
+            </div>
+
+            <div class="bubble theirs">
+                هنا حتكون رسائله ليك 💙
+                <div class="meta">
+                    <span>معاينة للتصميم</span>
+                </div>
+            </div>
+
+        </section>
+
+        <form class="composer" id="composer">
+
+            <textarea
+                class="message-input"
+                id="messageInput"
+                rows="1"
+                placeholder="اكتبي رسالتك هنا..."
+                aria-label="نص الرسالة"
+            ></textarea>
+
+            <button class="send" type="submit" aria-label="إرسال">
+                ➤
+            </button>
+
+        </form>
+
+        <div class="notice">
+            معاينة للتصميم — الرسائل هنا غير محفوظة
+        </div>
+
+    </main>
+
+    <script>
+        const input = document.getElementById("messageInput");
+        const messages = document.getElementById("messages");
+        const composer = document.getElementById("composer");
+
+        // تمديد مساحة الكتابة حسب طول الرسالة
+        input.addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height =
+                Math.min(this.scrollHeight, 140) + "px";
+        });
+
+        // معاينة شكل الرسالة فقط، من غير إرسال حقيقي
+        composer.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble mine";
+            bubble.appendChild(document.createTextNode(text));
+
+            const meta = document.createElement("div");
+            meta.className = "meta";
+
+            const time = document.createElement("span");
+            time.textContent = new Date().toLocaleTimeString("ar", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            meta.appendChild(time);
+            bubble.appendChild(meta);
+            messages.appendChild(bubble);
+
+            input.value = "";
+            input.style.height = "auto";
+
+            messages.scrollTop = messages.scrollHeight;
+        });
+    </script>
+
+</body>
+  </html>
