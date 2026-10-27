@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>دخول مساحتنا الخاصة 💙</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #fff7e9;
+            background:
+                linear-gradient(
+                    rgba(13, 25, 48, 0.78),
+                    rgba(13, 25, 48, 0.90)
+                ),
+                linear-gradient(145deg, #354766, #101b32);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px 24px;
+            text-align: center;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(233, 198, 140, 0.6);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #e9c68c;
+            font-size: 25px;
+            font-weight: normal;
+        }
+
+        p {
+            color: #e4e4eb;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 13px;
+            border-radius: 12px;
+            border: 1px solid rgba(233, 198, 140, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #d0d2dc;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 14px;
+            background: #e9c68c;
+            color: #15233e;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #status {
+            min-height: 25px;
+            margin-top: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+            color: #e9c68c;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="card">
+        <div class="heart">🤍</div>
+
+        <h1>مساحتنا الخاصة</h1>
+
+        <p>
+            مكان صغير يجمع قلبينا،<br>
+            مخصص لينا نحن الاتنين 💙
+        </p>
+
+        <form id="loginForm">
+            <input
+                id="email"
+                type="email"
+                placeholder="الإيميل"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                id="password"
+                type="password"
+                placeholder="كلمة المرور"
+                autocomplete="current-password"
+                required
+            >
+
+            <button id="loginButton" type="submit">
+                دخول إلى مساحتنا 💌
+            </button>
+        </form>
+
+        <p id="status" role="status" aria-live="polite"></p>
+
+        <a class="back" href="Index.html">الرجوع للصفحة الرئيسية</a>
+    </main>
+
+    <script type="module">
+        import { initializeApp }
+            from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+
+        import {
+            getAuth,
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwgLS--kn5SYpv47yiF48cejBcHGF3WvA",
+            authDomain: "our-special-world-9ac8f.firebaseapp.com",
+            projectId: "our-special-world-9ac8f",
+            storageBucket: "our-special-world-9ac8f.firebasestorage.app",
+            messagingSenderId: "794782590242",
+            appId: "1:794782590242:web:d775479f89923052a5b17b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const form = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const status = document.getElementById("status");
+        const loginButton = document.getElementById("loginButton");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            status.textContent = "جاري تسجيل الدخول...";
+            loginButton.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+
+                status.textContent = "تم تسجيل الدخول بنجاح 💙";
+
+                window.location.href = "Index.html";
+            } catch (error) {
+                if (
+                    error.code === "auth/invalid-credential" ||
+                    error.code === "auth/wrong-password" ||
+                    error.code === "auth/user-not-found"
+                ) {
+                    status.textContent =
+                        "الإيميل أو كلمة المرور غير صحيحة. راجعي البيانات وحاولي تاني.";
+                } else if (error.code === "auth/too-many-requests") {
+                    status.textContent =
+                        "محاولات الدخول كثيرة. انتظري شوية وحاولي لاحقاً.";
+                } else {
+                    status.textContent =
+                        "ما قدرنا نسجل الدخول. راجعي اتصال الإنترنت وإعدادات Firebase.";
+                }
+
+                loginButton.disabled = false;
+            }
+        });
+    </script>
+
+</body>
+</html>
